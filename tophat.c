@@ -1,5 +1,6 @@
 /*
 implement the top-hat transformation for gray-scale image
+structure element is a disk
 */
 #include "VisXV4.h"          /* VisX structure include file     */
 #include "Vutil.h"           /* VisX utility header files       */
