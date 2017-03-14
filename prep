@@ -1,8 +1,9 @@
 # extract greeen channel
 vchan if=image of=image.gr c=2
 
-# gaussian filter
+# gaussian filter and invert
 vgfilt if=image.gr of=image.gau 
+vpix if=image.gau of=image.inv -neg
 
 #erode the mask
 #vmorph if=mask.vx of=mask.e s=2 -e #problem exists (see piazza)
