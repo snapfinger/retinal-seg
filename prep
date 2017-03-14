@@ -1,0 +1,26 @@
+
+#erode the mask
+vmorph if=mask.vx of=mask.e s=2 -e
+
+#change from unsigned int to float
+vfix if=image.pre1 of=image.pre.f -float
+
+#standardize
+vcc std.c -o std
+std if=image.pre.f of=image.std
+
+#ADD between top-hat output and mask
+#vopif=mask.e ig=image.tophat.add4 of=image.and -and
+
+# opening
+vcc opening.c -o opening
+opening if=image.std of=image.std.op s=3
+
+# closing
+vcc closing.c -o closing
+closing if=image.std of=image.std.cl s=4
+
+# toggle mapping filter
+vcc toggle.c -o toggle.c
+toggle if=image.std.op ig=image.std.cl bf=image.std of=image.std.toggle
+
