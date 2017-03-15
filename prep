@@ -1,4 +1,5 @@
 #!/bin/sh
+#script to run all the processing stages
 
 # extract greeen channel
 vchan c=2 if=image of=image.gr
@@ -41,8 +42,7 @@ vop if=mask.e ig=image.tophat4 of=image.and -and
 
 # threshold
 #vcc thresh.c -o thresh
-
-../thresh if=image.and of=segment.vx th=60
+../thresh if=image.and of=segment.vx th=60 #change th value use different threshold 
 # compare with ground truth
 vrdiff if=segment.vx bf=man1.vx ig=image.inv os=compare.txt
 

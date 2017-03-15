@@ -6,9 +6,6 @@ structure element is a disk
 #include "Vutil.h"           /* VisX utility header files       */
 #include <stdbool.h>
 
-
-
-
 VXparam_t par[] =       
 {                           
 {    "if=",    0,   " input file"},
