@@ -34,8 +34,6 @@ Vfread(&im,IVAL);
 
 Vfnewim(&tm, VX_PBYTE, im.bbx, im.chan);
 
-//float percent=strtof(PST,NULL);
-//fprintf(stderr,"percentage used: %f\n",percent);
 
 int thresh=atoi(THRESH);
 fprintf(stderr,"threshold used: %d\n",thresh);

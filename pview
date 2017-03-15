@@ -1,0 +1,46 @@
+#!/bin/sh
+
+## sh script by prof reeves to run a test program ($2) on a set
+## if test cases ($1)
+
+# creat the result file
+rfile=result_test_60.csv
+rm -f $rfile
+echo "Case,FPC,Dice,Jaquard,Sens.,Spec." > $rfile
+
+echo $rfile 
+
+vcc thresh.c -o thresh
+vcc tophat.c -o tophat
+vcc closing.c -o closing
+vcc opening.c -o opending
+vcc toggle.c -o toggle
+
+# do for all cases listed in the file specified by $1
+first=1
+for i in `cat $1`
+do
+# show which case is being processed
+echo $i
+# process in case dir
+cd $i
+
+#### assume program is in main directory
+../$2 #if=image im=mask.vx of=segment.vx
+vrdiff if=segment.vx bf=man1.vx -ci ig=image.gr of=diff.vx 
+
+
+cd ../
+
+if [ $first -eq 1 ] 
+then
+vdim -c $i/diff.vx of=result_train_60.vx
+first=0
+else
+vxfile f=1 if=$i/diff.vx of=result_train_60.vx
+fi
+
+
+echo " "
+done
+echo "pview completed"

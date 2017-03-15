@@ -1,43 +1,51 @@
+#!/bin/sh
+
 # extract greeen channel
-vchan if=image of=image.gr c=2
+vchan c=2 if=image of=image.gr
 
 # gaussian filter and invert
-vgfilt if=image.gr of=image.gau 
+vgfilt if=image.gr of=image.gau xs=1 ys=1 zs=0
 vpix if=image.gau of=image.inv -neg
 
-#erode the mask
-#vmorph if=mask.vx of=mask.e s=2 -e #problem exists (see piazza)
-
-
-#ADD between top-hat output and mask
-#vopif=mask.e ig=image.tophat.add4 of=image.and -and
-
 # opening
-vcc opening.c -o opening
-opening if=image.inv of=image.op s=4
+#vcc opening.c -o opening
+../opening if=image.inv of=image.op s=3
 
 # closing
-vcc closing.c -o closing
-closing if=image.inv of=image.cl s=4
+#vcc closing.c -o closing
+../closing if=image.inv of=image.cl s=4
 
 # toggle mapping filter
-vcc toggle.c -o toggle
-toggle if=image.op ig=image.cl bf=image.inv of=image.toggle
+#vcc toggle.c -o toggle
+../toggle if=image.op ig=image.cl bf=image.inv of=image.toggle
 
-# top-hat
-vcc tophat.c -o tophat
-tophat if=image.toggle of=image.tophat s=9 # opening kernel size: 9
 
-# change from unsigned int to float
-vfix if=image.tophat of=image.tophat.f -float
+# sum of top-hat
+#vcc tophat.c -o tophat
+../tophat if=image.toggle of=image.tophat s=10 # opening kernel size: 10
+vop if=image.tophat ig=image.tophat of=image.tophat2 -add
+vop if=image.tophat2 ig=image.tophat2 of=image.tophat4 -add
 
-# standardize
-vcc std.c -o std
-std if=image.tophat.f of=tophat.std
+
+# lapacian of gaussian
+# vdog if=image.tophat4 of=image.lap r=1.6 -2d
+# vop if=image.lap ig=image.lap of=image.lap2 -add
+# vop if=image.lap2 ig=image.lap2 of=image.lap4 -add
+
+
+# erode the mask
+vmorph if=mask.vx of=mask.e s=20,20 -e 
+
+#AND between top-hat output and mask
+vop if=mask.e ig=image.tophat4 of=image.and -and
 
 # threshold
-vcc thresh.c -o thresh
-thresh if=tophat.std of=segment p=0.85
+#vcc thresh.c -o thresh
+
+../thresh if=image.and of=segment.vx th=60
+# compare with ground truth
+vrdiff if=segment.vx bf=man1.vx ig=image.inv os=compare.txt
+
 
 
 
