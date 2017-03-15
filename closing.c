@@ -37,10 +37,9 @@ Vfembed(&tm1,&im,0,0,0,0); //for max
 Vfembed(&tm2,&im,0,0,0,0); //for min
 Vfembed(&tm3,&im,0,0,0,0); //for output
 
-fprintf(stderr,"construction done");
 
 int radius=atoi(SIZE);
-fprintf(stderr,"radius size: %d\n",radius);
+fprintf(stderr,"closing's structuring element radius size: %d\n",radius);
 
 int y,x;//image index
 

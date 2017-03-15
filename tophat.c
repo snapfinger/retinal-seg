@@ -25,7 +25,6 @@ main(argc, argv)
 int argc;
 char *argv[];
 {
-fprintf(stderr,"start\n");
 Vfstruct (im);                      /* i/o image structure          */
 Vfstruct (tm1);                      /* temp image structure         */
 Vfstruct (tm2);                      /* temp image structure         */
@@ -40,10 +39,8 @@ Vfembed(&tm1,&im,0,0,0,0); //for min
 Vfembed(&tm2,&im,0,0,0,0); //for max
 Vfembed(&tm3,&im,0,0,0,0); //for output
 
-fprintf(stderr,"construction done");
-
 int radius=atoi(SIZE);
-fprintf(stderr,"radius size: %d\n",radius);
+fprintf(stderr,"top-hat se radius size: %d\n",radius);
 
 int y,x;//image index
 
@@ -61,9 +58,6 @@ for(y=im.ylo;y<=im.yhi;y++){
 		
 		int u,v;
    
-		
-   
-   
 		for(u=y0;u<=y1;u++){
 			for(v=x0;v<=x1;v++){
 				if((y-u)*(y-u)+(x-v)*(x-v)<=radius*radius && im.u[u][v]<minVal){
@@ -76,8 +70,6 @@ for(y=im.ylo;y<=im.yhi;y++){
 		tm1.u[y][x]=minVal;
 	}
 }
-
-fprintf(stderr,"start max...\n");
 
 //max filter
 for(y=tm1.ylo;y<=tm1.yhi;y++){
@@ -103,17 +95,14 @@ for(y=tm1.ylo;y<=tm1.yhi;y++){
 	}
 }
 
-fprintf(stderr,"start subtraction\n");
-fprintf(stderr,"tm2 yhi: %d ,tm2 xhi: %d\n",tm2.yhi,tm2.xhi); 
 
 for(y=tm2.ylo;y<=tm2.yhi;y++){
 	for(x=tm2.xlo;x<=tm2.xhi;x++){
 		tm3.u[y][x]=im.u[y][x]-tm2.u[y][x];
-   //fprintf(stderr,"tm3 pixel value: %d\n",tm3.u[y][x]);
 	}
 }
 
-fprintf(stderr,"end transformation\n");
+fprintf(stderr,"top-hat transformation completed\n");
 
 Vfwrite(&tm3, OVAL);
 exit(0);

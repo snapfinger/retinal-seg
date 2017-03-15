@@ -24,7 +24,6 @@ main(argc, argv)
 int argc;
 char *argv[];
 {
-fprintf(stderr,"start\n");
 Vfstruct (im);                      /* i/o image structure          */
 Vfstruct (tm1);                      /* temp image structure         */
 Vfstruct (tm2);                      /* temp image structure         */
@@ -39,10 +38,9 @@ Vfembed(&tm1,&im,0,0,0,0); //for min
 Vfembed(&tm2,&im,0,0,0,0); //for max
 Vfembed(&tm3,&im,0,0,0,0); //for output
 
-fprintf(stderr,"construction done");
 
 int radius=atoi(SIZE);
-fprintf(stderr,"radius size: %d\n",radius);
+fprintf(stderr,"opening's disk radius size: %d\n",radius);
 
 int y,x;//image index
 
@@ -71,8 +69,6 @@ for(y=im.ylo;y<=im.yhi;y++){
 		tm1.u[y][x]=minVal;
 	}
 }
-
-fprintf(stderr,"start max...\n");
 
 //max filter (dilate)
 for(y=tm1.ylo;y<=tm1.yhi;y++){
