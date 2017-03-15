@@ -35,7 +35,7 @@ VXparse(&argc, &argv, par);   /* parse the command line   */
 Vfread(&im,IVAL);
 
 
-long sum=0; //for mean
+float sum=0; //for mean
 float sum_sq=0;//for standard deviation
 float mean=0;
 float var=0; //variance
@@ -52,33 +52,35 @@ int y,x;//image index
 //compute mean
 for(y=im.ylo;y<=im.yhi;y++){	
 	for(x=im.xlo;x<=im.xhi;x++){
-		sum+=im.u[y][x];
+		sum+=im.f[y][x];
 	}
 }
 
-int totalNum=(im.yhi-im.ylo+1)*(im.xhi-im.xlo+1);
-mean=(float)(sum/totalNum);
+float totalNum=(im.yhi-im.ylo+1)*(im.xhi-im.xlo+1);
+mean=sum/totalNum;
 
 //compute standard deviation
 for(y=im.ylo;y<=im.yhi;y++){	
 	for(x=im.xlo;x<=im.xhi;x++){
-		float curPixel=(float)im.u[y][x];
+		float curPixel=im.f[y][x];
 		sum_sq+=(curPixel-mean)*(curPixel-mean);		
 	}
 }
 
-var=sum_sq/(float)totalNum;
+var=sum_sq/totalNum;
 std=sqrt(var);
 
-fprintf(stderr,"sum=%ld \n",sum);
+/*
+fprintf(stderr,"sum=%.2f \n",sum);
 fprintf(stderr,"sum_sq=%.2f \n",sum_sq);
 fprintf(stderr,"total pixel number=%d \n",totalNum);
 fprintf(stderr,"mean=%.2f \nstadard deviation=%.2f \n",mean,std);
 fprintf(stderr,"var=%f \n",var);
+*/
 
 for(y=tm.ylo;y<=tm.yhi;y++){	
 	for(x=tm.xlo;x<=tm.xhi;x++){
-		float curPixel=(float)im.u[y][x];
+		float curPixel=im.f[y][x];
 		float tmpPixel=curPixel-mean;
 		tm.f[y][x]=tmpPixel/std;
 	}

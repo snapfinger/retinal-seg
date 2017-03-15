@@ -14,15 +14,15 @@ vpix if=image.gau of=image.inv -neg
 
 # opening
 vcc opening.c -o opening
-opening if=image.gau of=image.op s=4
+opening if=image.inv of=image.op s=4
 
 # closing
 vcc closing.c -o closing
-closing if=image.gau of=image.cl s=4
+closing if=image.inv of=image.cl s=4
 
 # toggle mapping filter
 vcc toggle.c -o toggle
-toggle if=image.op ig=image.cl bf=image.gau of=image.toggle
+toggle if=image.op ig=image.cl bf=image.inv of=image.toggle
 
 # top-hat
 vcc tophat.c -o tophat

@@ -33,8 +33,8 @@ Vfread(&im,IVAL);
 
 Vfnewim(&tm, VX_PBYTE, im.bbx, im.chan);
 
-float percent=atoi(PST);
-fprintf(stderr,"percentage: %d\n",percent);
+float percent=strtof(PST,NULL);
+fprintf(stderr,"percentage: %f\n",percent);
 
 int y,x;//image index
 float max=-FLT_MAX,min=FLT_MAX;

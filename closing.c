@@ -70,7 +70,6 @@ for(y=im.ylo;y<=im.yhi;y++){
 	}
 }
 
-fprintf(stderr,"start min...\n");
 
 //then min  (erode)
 for(y=tm1.ylo;y<=tm1.yhi;y++){
