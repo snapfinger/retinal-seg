@@ -4,25 +4,26 @@ threshold the enhanced image (after toggle and top-hat) to get binary image
 #include "VisXV4.h"          /* VisX structure include file     */
 #include "Vutil.h"           /* VisX utility header files       */
 #include <stdbool.h>
-#include <float.h>
+//#include <float.h>
+#include <limits.h>
 
 VXparam_t par[] =       
 {                           
 {    "if=",    0,   " input file"},
 {    "of=",    0,   " output file"},
-{    "p=",    0,   " size of structure element"}, //percentage of total pixel range to threshold
+{    "th=",    0,   " size of structure element"}, //percentage of total pixel range to threshold
 {     0,       0,   0}  
 };
 
 #define  IVAL   par[0].val
 #define  OVAL   par[1].val
-#define  PST   par[2].val
+#define  THRESH   par[2].val
 
 main(argc, argv)
 int argc;
 char *argv[];
 {
-fprintf(stderr,"start\n");
+fprintf(stderr,"start thresholding...\n");
 Vfstruct (im);                      /* i/o image structure          */
 Vfstruct (tm);                      /* temp image structure         */
 
@@ -33,29 +34,40 @@ Vfread(&im,IVAL);
 
 Vfnewim(&tm, VX_PBYTE, im.bbx, im.chan);
 
-float percent=strtof(PST,NULL);
-fprintf(stderr,"percentage: %f\n",percent);
+//float percent=strtof(PST,NULL);
+//fprintf(stderr,"percentage used: %f\n",percent);
+
+int thresh=atoi(THRESH);
+fprintf(stderr,"threshold used: %d\n",thresh);
 
 int y,x;//image index
-float max=-FLT_MAX,min=FLT_MAX;
+int max=INT_MIN,min=INT_MAX;
 
-//first min (erode)
+
 for(y=im.ylo;y<=im.yhi;y++){
 	for(x=im.xlo;x<=im.xhi;x++){
-		if(im.f[y][x]>max){
-			max=im.f[y][x];
-		}else if(im.f[y][x]<min){
-			min=im.f[y][x];		
+		if(im.u[y][x]>max){
+			max=im.u[y][x];
+		}else if(im.u[y][x]<min){
+			min=im.u[y][x];		
 		}	
 		
 	}
 }
 
-float threshold=min+(max-min)*percent;
+
+int newMin=0,newMax=255;
+for(y=im.ylo;y<=im.yhi;y++){
+	for(x=im.xlo;x<=im.xhi;x++){
+		tm.u[y][x]=(im.u[y][x]-min)*(255/max-min)+newMin;
+        }  	
+}
+
+fprintf(stderr,"max=%d min=%d threshold=%d\n",max,min,thresh);
 
 for(y=im.ylo;y<=im.yhi;y++){
 	for(x=im.xlo;x<=im.xhi;x++){
-		if(im.f[y][x]>=threshold){
+		if(im.u[y][x]>=thresh){
 			tm.u[y][x]=255;
 		}else{
 			tm.u[y][x]=0;		
