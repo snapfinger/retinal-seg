@@ -1,11 +1,10 @@
 # Retinal Vessel Segmentaion in Fundus Images
 This project is a simple implementation of morphological operation based retinal vessel segmentation.
 
-**Sample Result**
 
 ![Sample Output](sample-result.JPG)
 
-Red: true positive, Green: false positive, Blue: false negative
+**Sample Result:** Red - true positive, Green - false positive, Blue - false negative
 
 -----
 ### Step 1: Preprocessing
