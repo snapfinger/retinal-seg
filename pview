@@ -1,7 +1,6 @@
 #!/bin/sh
 
-## sh script by prof reeves to run a test program ($2) on a set
-## if test cases ($1)
+## sh script based on prof reeves's to run a test program ($2) on a set of test cases ($1)
 
 # creat the result file
 rfile=result_test_60.csv
