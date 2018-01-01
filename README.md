@@ -38,7 +38,7 @@ After trying several threshold values (50, 60, 70, etc), 60 is set to get compar
 
 ### Platform
 
-This project is developed under [VisionX](http://www.via.cornell.edu/visionx/vxmore.html), which is an open source library for image processing program development, using C and shell script.
+This project is developed in [VisionX](http://www.via.cornell.edu/visionx/vxmore.html) using C and shell script.
 
 
 ### Reference Papers
